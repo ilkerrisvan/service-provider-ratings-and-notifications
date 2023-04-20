@@ -4,8 +4,5 @@
 # Swagger docs
 /docs/
 
-# Secret files
-/secret/
-
 # Test binary, built with `go test -c`
 *.test
