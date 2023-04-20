@@ -1,7 +1,7 @@
 package receiver
 
 import (
-	model2 "armut-notification-api/internal/data/pubsub/model"
+	receiverEventModel "armut-notification-api/internal/data/pubsub/model"
 	"armut-notification-api/internal/data/storage"
 	"armut-notification-api/internal/util/env"
 	"armut-notification-api/internal/util/logger"
@@ -30,7 +30,6 @@ func NewNotificationReceiver(environment env.IEnvironment, loggr logger.ILogger,
 		timeout:        10,
 	}
 	receiver.db = storage.NewNotificationDb(environment, loggr, validatr)
-
 	return &receiver
 }
 func (r *NotificationReceiver) InitReceivers(count int) {
@@ -53,7 +52,7 @@ func (r *NotificationReceiver) ReceiveMessages() {
 		select {
 		case res := <-msg:
 			res.Ack()
-			var model model2.NotificationReceiverEventModel
+			var model receiverEventModel.NotificationReceiverEventModel
 			_ = json.Unmarshal(res.Data, &model)
 			setRatingCh := make(chan *storage.SetRatingDbResponse)
 			go r.db.SetRatings(
